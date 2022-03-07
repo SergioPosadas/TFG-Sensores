@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import socket, sys, time, datetime
+import socket, sys, time, datetime, logging
 
 class Client(object):
     """
@@ -39,8 +39,7 @@ class Client(object):
             # Si se ha recibido información del socket del módulo, se va mostrando una enumeración
             # cada seguundo hasta que no se envíe nada o se corte la conexión
             if data:            
-                print('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] Receiving data from SolarModules socket', )
-                # logging.info('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] Data received from SolarModules socket:', msg)
+                logging.info('Receiving data from SolarModules socket...')
                 time.sleep(1)
                 
             # Si no se recibe nada se corta la conexión creada
@@ -50,7 +49,10 @@ class Client(object):
         
 if __name__ == '__main__':
     
-    print ('Hola')
+    # Ponemos el nivel del log deseado
+    logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.DEBUG)
+    
+    logging.info('Hola')
     
     # Obtención de los valores introducidos en los argumentos del programa
     # para inicializar y conectar el socket del cliente
@@ -61,8 +63,7 @@ if __name__ == '__main__':
     obj_client = Client(host, port)
     
     # Se muestra el puerto de conexión
-    print('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] Conectado al puerto de SolarModule:', port)
-    #logging.info('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] Conectado al puerto de SolarModule:', port)
+    logging.info('Connected to SolarModule...')
     
     # Llamada a la clase run del socket de Client para que se inicie la conexión
     # e intercambio de información con el socket de SolarModule al que se conecta

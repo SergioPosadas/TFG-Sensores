@@ -34,8 +34,8 @@ class SolarModule(object):
             connect, address = self.socket.accept()            
             
             # Mensaje que informa sobre la dirección del cliente que se ha conectado, de momento solo saca la hora y la fecha
-            print('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] Conectado a', address)
-            # logging.info('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] conectado a', address)
+            # Mostramos el puerto de conexión
+            logging.info('Conection finished succesfully in the specified port')
             
             while True:
                 # Se comprueba si se recibe información del socket cliente
@@ -48,7 +48,6 @@ class SolarModule(object):
                 # Si no se ha recibido información se corta la conexión con dicho socket
                 else:
                     connect.close()
-                    print('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] Cliente desconectado, adiós')
-                    # logging.info('[' + datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S') + '] adios')
+                    logging.info('Client disconected, bye')
                     break      
 
