@@ -1,0 +1,16 @@
+{
+	"response": {
+		"type": "DATA",
+		"point": {
+			"x": "5,3",
+			"y": "12,14",
+			"value": "158,29"
+		},
+		"port": "2500",
+		"message": "response",
+		"date": [
+			"hh:mm:ss",
+			"dd/mm/aaaa"
+		]
+	}
+}

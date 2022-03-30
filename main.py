@@ -9,7 +9,7 @@ if __name__ == '__main__':
 	# Ponemos el nivel del log deseado
         logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.DEBUG)
         
-        logging.info('Hellow!')
+        logging.info('Hello!')
         
         host = ''
         port = 2500

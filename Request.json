@@ -1,0 +1,15 @@
+{
+	"request": {
+		"type": "QUERY",
+		"point": {
+			"x": "5,3",
+			"y": "12,14"
+		},
+		"port": "2500",
+		"message": "request",
+		"date": [
+			"hh:mm:ss",
+			"dd/mm/aaaa"
+		]
+	}
+}	
