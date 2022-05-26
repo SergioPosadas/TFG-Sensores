@@ -7,9 +7,7 @@
 		},
 		"port": "2500",
 		"message": "request",
-		"date": [
-			"hh:mm:ss",
-			"dd/mm/aaaa"
-		]
+		"date": "datetime"
 	}
-}	
+}
+
