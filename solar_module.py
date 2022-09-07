@@ -50,8 +50,8 @@ class SolarModule(object):
             while True:
                 # Se comprueba si se recibe información del socket cliente
                 data = connect.recv(1024)
-                
-                logging.info(data)
+                dat = data.decode()
+                logging.info(dat)
                 
                 # Si se ha recibido información de dicho socket, se responde al cliente a modo de ACK
                 if data:

@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-import socket, sys, time, datetime, logging, json
+from datetime import datetime
+
+import socket, sys, time, logging, json
 
 
 class Client(object):
@@ -47,7 +49,8 @@ class Client(object):
             # cada seguundo hasta que no se envíe nada o se corte la conexión
             if data:            
                 logging.info('Receiving data from SolarModules socket...')
-                logging.info(data)
+                dat = data.decode()
+                logging.info(dat)
                 time.sleep(1)
                 
             # Si no se recibe nada se corta la conexión creada

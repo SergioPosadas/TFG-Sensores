@@ -7,7 +7,7 @@
 		},
 		"port": "2500",
 		"message": "request",
-		"date": "datetime"
+		"date": "date(b b y H M S)"
 	}
 }
 

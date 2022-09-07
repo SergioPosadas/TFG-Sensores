@@ -8,6 +8,6 @@
 		},
 		"port": "2500",
 		"message": "response",
-		"date": "datetime"
+		"date": "date(b b y H M S)"
 	}
 }
