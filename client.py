@@ -12,7 +12,7 @@ class Client(object): # Sensor
         Creación de la clase cliente para probar la conexión con SolarModule (Cambiar el nombre a sensor)
     """
     
-    def __init__(self, host, port, REQUEST, RESPONSE, m, n):
+    def __init__(self, host, port, m, n, REQUEST, RESPONSE):
         """
             Creación del constructor init para inicializar el socket del sensor a través del puerto
             e intercambiar información del plano con el módulo
@@ -48,8 +48,8 @@ class Client(object): # Sensor
             	
             for i in shape:
                 for j in shape:
-                    self.REQUEST['X point'] = "i"
-                    self.REQUEST['Y point'] = "j"
+                    self.REQUEST['X point'] = i
+                    self.REQUEST['Y point'] = j
                     logging.info(REQUEST)
                     self.socket.sendall(bytes(str(self.REQUEST).encode()))
                         
@@ -60,28 +60,22 @@ class Client(object): # Sensor
             # cada segundo hasta que no se reciba nada o se corte la conexión
             if data:            
                 logging.info('Receiving data from SolarModules socket...')
-                self.RESPONSE = data.decode()
-                for i in self.RESPONSE.values():
-                    if self.RESPONSE.values() == 'Value':
+                self.RESPONSE = json.loads(data)
+                if self.RESPONSE['Value']:
                         logging.info("Point value (" + str(self.RESPONSE.get("X point")) + ", " + str(self.RESPONSE.get("Y point")) + ") is: " + str(self.RESPONSE.get("Value")))
-                            
-                    elif self.RESPONSE.values() == 'ACK':
-                        logging.info("Bad request sent, pls repeat it.")
-                        for i in range(shape[0]):
-                            self.RESPONSE['X point'] = i
-                            for j in range(shape[1]):
-                                self.RESPONSE['Y point'] = j
-                                logging.info("Sending requested info...")                            
-                                self.socket.sendall(self.RESPONSE.encode())
+                        
+                elif self.RESPONSE['type'] == 'ACK':
+                    logging.info("Bad sent request, pls repeat it.")
+                    for i in range(shape[0]):
+                        self.RESPONSE['X point'] = i
+                        for j in range(shape[1]):
+                            self.RESPONSE['Y point'] = j
+                            logging.info("Sending requested info...")                            
+                            self.socket.sendall(self.RESPONSE.encode())
              
-            # Sigue recibiendo información                   
-            data = self.socket.recv(1024)
-                                        
-            if data:
-                logging.info('Receiving data from SolarModules socket...')
-                self.RESPONSE = data.decode()
-                for i in self.RESPONSE.values():
-                    if self.RESPONSE.values() == 'completed':
+                    logging.info('Receiving data from SolarModules socket...')
+                    self.RESPONSE = data.decode()
+                    if self.RESPONSE['message'] == 'completed':
                         logging.info("Closing conection with module... Bye!")
                         connect.close()
                         self.socket.close()

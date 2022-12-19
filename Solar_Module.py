@@ -24,14 +24,7 @@ class SolarModule(object):
         self.n = n
         self.REQUEST = REQUEST
         self.RESPONSE = RESPONSE
-        """
-        # Obtención del archivo json con el contenido del mensaje que se va a enviar a SolarModule
-        with open("Response.json", "r", encoding='utf-8') as resp:
-        	self.response = json.load(resp)
-        	
-        	# Mostrar por pantalla el archivo obtenido
-        	logging.info('TEST REQUEST MESSAGE: ' + str(self.response))
-        """
+       
 
     def run(self):
         """
@@ -92,8 +85,7 @@ class SolarModule(object):
 
         # El dominio aleatorio generado será el rango de valores entre el valor mínimo y el máximo de nuestro plano
 
-        logging.info(
-            "Random domain generated is: [" + str(minim) + ", " + str(maxim) + "].")
+        logging.info("Random domain generated is: [" + str(minim) + ", " + str(maxim) + "].")
 
         # Dibujado del plano creado a través de matplotlib
 
@@ -170,37 +162,37 @@ class SolarModule(object):
             while True:
                 # Se comprueba si se recibe información del socket cliente
                 if data := connect.recv(1024):
-                    self.RESPONSE = data.decode()
-                    logging.info(dat)
+                    self.RESPONSE = json.loads(data)
+                    result = type(self.RESPONSE)
+                    logging.info(result)
                     # Una vez comprobado se verifica el tipo de peticion del cliente, si es request se extrae el punto solicitado
                     # y se envía el valor de la irradiancia en dicho punto
-                    for i in self.RESPONSE.values():
-                        if ((self.RESPONSE.values() >= "0") and (self.RESPONSE.values() <= "1000")):
-                            x = dat["X point"]
-                            y = dat["Y point"]
+                    if ((self.RESPONSE['X point'] >= 0) and (self.RESPONSE['X point'] <= 1000)):
+                        x = self.RESPONSE['X point']
+                        y = self.RESPONSE['Y point']
                             
-                            logging.info("Requested item: (" + str(x) + ", " + str(y) + ")")
+                        logging.info("Requested item: (" + str(x) + ", " + str(y) + ")")
                             
-                            self.REQUEST['X point'] = x
-                            self.REQUEST['Y point'] = y
-                            self.REQUEST['Value'] = dom[x][y]
+                        self.REQUEST['X point'] = x
+                        self.REQUEST['Y point'] = y
+                        self.REQUEST['Value'] = dom[x][y]
                             
-                            connect.sendall(bytes(self.REQUEST))
-                            
+                        connect.sendall(bytes(self.REQUEST))
+                           
                         # Si se recibe un punto incorrecto del plano, se envia un "REQUEST" indicando que hay un error
                         # se tiene que repetir el proceso de envío del "REQUEST"                            
                         
-                        else:
-                            logging.info("Incorrect item requested...")
-                            logging.info("Requesting that the process be repeated...")
-                            self.RESPONSE['type'] = 'ACK'
-                            self.RESPONSE['message'] = 'repeat'
-                            connect.sendall(bytes(self.RESPONSE))
+                    else:
+                        logging.info("Incorrect item requested...")
+                        logging.info("Requesting that the process be repeated...")
+                        self.RESPONSE['type'] = 'ACK'
+                        self.RESPONSE['message'] = 'repeat'
+                        connect.sendall(bytes(self.RESPONSE))
                             
                         # Si se recibe un ACK con el mensaje de "completed" se cierra la conexión con el sensor IoT
                         # ya que se ha terminado de verificar la irradiancia del plano
 
-                        if ((self.RESPONSE.values() == "ACK") and (self.RESPONSE.values() == "completed")):
+                        if ((self.RESPONSE['type'] == 'ACK') and (self.RESPONSE['message'] == 'completed')):
                             logging.info("Verification completed, conection to sensor closed.")
                             logging.info("See you soon!")
                             connect.close()
