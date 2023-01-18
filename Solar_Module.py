@@ -162,9 +162,11 @@ class SolarModule(object):
             while True:
                 # Se comprueba si se recibe información del socket cliente
                 if data := connect.recv(1024):
-                    self.RESPONSE = json.loads(data)
+                    self.RESPONSE = data.decode()
                     result = type(self.RESPONSE)
+                    logging.info(self.RESPONSE)
                     logging.info(result)
+                    
                     # Una vez comprobado se verifica el tipo de peticion del cliente, si es request se extrae el punto solicitado
                     # y se envía el valor de la irradiancia en dicho punto
                     if ((self.RESPONSE['X point'] >= 0) and (self.RESPONSE['X point'] <= 1000)):
@@ -177,28 +179,16 @@ class SolarModule(object):
                         self.REQUEST['Y point'] = y
                         self.REQUEST['Value'] = dom[x][y]
                             
-                        connect.sendall(bytes(self.REQUEST))
+                        connect.sendall(bytes((str(self.REQUEST).replace("\'", "\"")).encode()))
                            
                         # Si se recibe un punto incorrecto del plano, se envia un "REQUEST" indicando que hay un error
-                        # se tiene que repetir el proceso de envío del "REQUEST"                            
-                        
+                        # se tiene que repetir el proceso de envío del "REQUEST"                        
                     else:
                         logging.info("Incorrect item requested...")
                         logging.info("Requesting that the process be repeated...")
-                        self.RESPONSE['type'] = 'ACK'
-                        self.RESPONSE['message'] = 'repeat'
-                        connect.sendall(bytes(self.RESPONSE))
-                            
-                        # Si se recibe un ACK con el mensaje de "completed" se cierra la conexión con el sensor IoT
-                        # ya que se ha terminado de verificar la irradiancia del plano
-
-                        if ((self.RESPONSE['type'] == 'ACK') and (self.RESPONSE['message'] == 'completed')):
-                            logging.info("Verification completed, conection to sensor closed.")
-                            logging.info("See you soon!")
-                            connect.close()
-                            logging.info("Client disconected, bye.")
-                            self.socket.close()
-                            break
+                        self.REQUEST['type'] = 'ACK'
+                        self.REQUEST['message'] = 'repeat'
+                        connect.sendall(bytes((str(self.REQUEST).replace("\'", "\"")).encode()))
                         
                 else:
                     logging.info("Timeout expired, closing conection...")

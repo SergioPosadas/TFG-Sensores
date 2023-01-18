@@ -46,48 +46,52 @@ class Client(object): # Sensor
             #print(str(self.request))
             logging.info(self.REQUEST)
             	
-            for i in shape:
-                for j in shape:
-                    self.REQUEST['X point'] = i
+            for i in range(shape[0]):
+                for j in range(shape[1]):
+                    self.REQUEST['X point'] = i           
                     self.REQUEST['Y point'] = j
-                    logging.info(REQUEST)
-                    self.socket.sendall(bytes(str(self.REQUEST).encode()))
+                
+                    logging.info(str(self.REQUEST).replace("\'", "\"").encode())
+                    
+                    self.socket.sendall(bytes((str(self.REQUEST).replace("\'", "\"")).encode()))                        
+                    
+                    # Al haber realizado la conexión guardamos la información recibida en la variable data y la decodificamos
+                    data = self.socket.recv(1024)
                         
-            # Al haber realizado la conexión guardamos la información recibida en la variable data y la decodificamos
-            data = self.socket.recv(1024)
-                        
-            # Si se ha recibido información del socket del módulo, se va mostrando una enumeración
-            # cada segundo hasta que no se reciba nada o se corte la conexión
-            if data:            
-                logging.info('Receiving data from SolarModules socket...')
-                self.RESPONSE = json.loads(data)
-                if self.RESPONSE['Value']:
-                        logging.info("Point value (" + str(self.RESPONSE.get("X point")) + ", " + str(self.RESPONSE.get("Y point")) + ") is: " + str(self.RESPONSE.get("Value")))
-                        
-                elif self.RESPONSE['type'] == 'ACK':
-                    logging.info("Bad sent request, pls repeat it.")
-                    for i in range(shape[0]):
-                        self.RESPONSE['X point'] = i
-                        for j in range(shape[1]):
-                            self.RESPONSE['Y point'] = j
-                            logging.info("Sending requested info...")                            
-                            self.socket.sendall(self.RESPONSE.encode())
-             
-                    logging.info('Receiving data from SolarModules socket...')
-                    self.RESPONSE = data.decode()
-                    if self.RESPONSE['message'] == 'completed':
+                    # Si se ha recibido información del socket del módulo, se comprueba si se recibe el valor del punto y lo
+                    # y lo muestra, o si por el contrario se ha enviado mal el punto, se vuelve a repetir. Si no se recibe nada
+                    # se corta la conexión.
+                    
+                    if data:            
+                        logging.info('Receiving data from SolarModules socket...')
+                        self.RESPONSE = data.decode()
+                        if self.RESPONSE['Value']:
+                    	    logging.info("Point value (" + str(self.RESPONSE.get("X point")) + ", " + str(self.RESPONSE.get("Y point")) + ") is: " + str(self.RESPONSE.get("Value")))
+                    	    
+                        elif self.RESPONSE['message'] == 'repeat':
+                            logging.info("Bad sent request, pls repeat it.")
+                            for i in range(shape[0]):                                
+                                for j in range(shape[1]):
+                            	    self.REQUEST['X point'] = i
+                            	    self.REQUEST['Y point'] = j
+                            	    logging.info("Sending requested info...")                            
+                            	    self.socket.sendall(bytes((str(self.REQUEST).replace("\'", "\"")).encode()))
+                            	    
+                        else:
+                            logging.info("Closing conection with module... Bye!")
+                            connect.close()
+                            self.socket.close()
+                            break
+                    
+                    '''
+                    # Si no se recibe nada se corta la conexión creada
+                    else:
                         logging.info("Closing conection with module... Bye!")
                         connect.close()
                         self.socket.close()
-                
-            # Si no se recibe nada se corta la conexión creada
-            else:
-                logging.info("Closing conection with module... Bye!")
-                connect.close()
-                self.socket.close()
-                break
+                        break
+                    '''
         
-
         
 if __name__ == '__main__':
     
