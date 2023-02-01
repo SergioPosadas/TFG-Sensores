@@ -17,6 +17,7 @@ class SolarModule(object):
 
         # Asignación de los valores correspondientes a las variables para crear
         # y poner a escuchar el socket del módulo
+        
         self.host = host
         self.port = port
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -44,9 +45,7 @@ class SolarModule(object):
 
         scale = 100.0  # Proporcion entre el plano dibujado y el real
         octaves = 6  # Número de nivel de detalle que se quiere tenga el ruido de perlin
-        persistence = (
-            0.75  # Número que determina cuánto contribuye una octava a la forma general
-        )
+        persistence = 0.75  # Número que determina cuánto contribuye una octava a la forma general        
         lacunarity = 2.0  # Número que hace que la imagen sea mas heterogénea
 
         # Creación del ruido de perlin en el plano a través de dos bucles for y la funcion noise importada más arriba
@@ -66,7 +65,9 @@ class SolarModule(object):
 
         # Obtención de los valores máximos, mínimos, media, desviación y varianza del plano para obtener el dominio aleatorio del plano generado
 
+        print("\n")
         logging.info("Showing generated plain info...:")
+        print("\n")
 
         maxim = np.amax(pl)
         logging.info("Maximun's value is: " + str(maxim))
@@ -85,7 +86,9 @@ class SolarModule(object):
 
         # El dominio aleatorio generado será el rango de valores entre el valor mínimo y el máximo de nuestro plano
 
+        print("\n")
         logging.info("Random domain generated is: [" + str(minim) + ", " + str(maxim) + "].")
+        print("\n")
 
         # Dibujado del plano creado a través de matplotlib
 
@@ -110,6 +113,7 @@ class SolarModule(object):
                 r = mndom + p
                 dom[i][j] = r
 
+        print("\n")
         logging.info("Showing weighted plane information:")
         logging.info(dom)
 
@@ -130,7 +134,9 @@ class SolarModule(object):
 
         # El dominio ponderado será el rango de valores entre el valor mínimo y el máximo de nuestro plano ponderado
 
+        print("\n")
         logging.info("Real domain generated is: [" + str(minimum) + ", " + str(maximum) + "]")
+        print("\n")
 
         # Impresión del plano ponderado y obtención de los valores máximos, mínimos, media, desviación y varianza del plano
         # ponderado para comprobar que se ha hecho bien
@@ -143,13 +149,18 @@ class SolarModule(object):
         # del plano generado
 
         # Comando para indicarle al socket en qué puerto escuchar las conexiones
+        
         self.socket.bind((self.host, self.port))
 
         # Comando para que el socket acepte conexiones, el 1 indica que sólo se aceptará una conexión
+        
+        print("\n")
         logging.info("Waiting for a new conection...")
+        print("\n")
         self.socket.listen(1)
 
         while True:
+        
             # Comando para estar a la espera de conexiones, devolviendo la conexión del cliente
             # (guardada en connect) y la dirección (host y puerto) de dicha conexión
 
@@ -157,41 +168,56 @@ class SolarModule(object):
 
             # Mensaje que informa sobre la dirección del cliente que se ha conectado, de momento solo saca la hora y la fecha
             # Mostramos el puerto de conexión
+            
+            print("\n")
             logging.info("Conection done succesfully in the specified port.")
+            print("\n")
 
             while True:
+            
                 # Se comprueba si se recibe información del socket cliente
+                
                 if data := connect.recv(1024):
-                    self.RESPONSE = data.decode()
+                    self.RESPONSE = json.loads(data)
                     result = type(self.RESPONSE)
-                    logging.info(self.RESPONSE)
-                    logging.info(result)
-                    
+                    logging.info("Message received: " + str(self.RESPONSE))
+                    print("\n")
+                                        
                     # Una vez comprobado se verifica el tipo de peticion del cliente, si es request se extrae el punto solicitado
                     # y se envía el valor de la irradiancia en dicho punto
+                    
                     if ((self.RESPONSE['X point'] >= 0) and (self.RESPONSE['X point'] <= 1000)):
                         x = self.RESPONSE['X point']
                         y = self.RESPONSE['Y point']
                             
                         logging.info("Requested item: (" + str(x) + ", " + str(y) + ")")
+                        print("\n")
                             
                         self.REQUEST['X point'] = x
                         self.REQUEST['Y point'] = y
                         self.REQUEST['Value'] = dom[x][y]
-                            
+                                                    
+                        logging.info("Sending requested value (" + str(self.REQUEST['Value']) + ") to Sensor...")
+                        print("\n")                            
                         connect.sendall(bytes((str(self.REQUEST).replace("\'", "\"")).encode()))
                            
                         # Si se recibe un punto incorrecto del plano, se envia un "REQUEST" indicando que hay un error
-                        # se tiene que repetir el proceso de envío del "REQUEST"                        
+                        # se tiene que repetir el proceso de envío del "REQUEST"       
+                                         
                     else:
                         logging.info("Incorrect item requested...")
-                        logging.info("Requesting that the process be repeated...")
+                        logging.info("Requesting the process be repetition...")
+                        print("\n")
                         self.REQUEST['type'] = 'ACK'
                         self.REQUEST['message'] = 'repeat'
+                        
                         connect.sendall(bytes((str(self.REQUEST).replace("\'", "\"")).encode()))
+                        
+                # Si no se recibe nada, se cierra la conexión
                         
                 else:
                     logging.info("Timeout expired, closing conection...")
+                    print("\n")
                     connect.close()
                     logging.info("Client disconected, bye.")
                     self.socket.close()
