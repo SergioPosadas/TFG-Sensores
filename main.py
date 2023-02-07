@@ -18,8 +18,14 @@ if __name__ == '__main__':
     # Asignación de las variables que se utilizarán para creación del plano, conexión de sockets
     # y creación de los diferentes diccionarios utilizarán los mensajes para intercambio de información
     
-    m = 1000
-    n = 1000
+    logging.info("Please, type the m and n values for the plain generation...")
+    print("\n")
+    logging.info("m value")
+    m = int(input())
+    print("\n")
+    logging.info("n value")
+    n = int(input())
+    
     host = ''
     port = 2500
     REQUEST = {'type':'QUERY','message':'request','port':'2500'}

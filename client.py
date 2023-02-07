@@ -55,6 +55,9 @@ class Sensor(object):
                     self.REQUEST['X point'] = i           
                     self.REQUEST['Y point'] = j
                     
+                    self.REQUEST['type'] = 'DATA'
+                    self.REQUEST['message'] = 'response'
+                    
                     logging.info("Message to send: " + str(self.REQUEST).replace("\'", "\""))
                     print("\n")
                     
@@ -63,7 +66,7 @@ class Sensor(object):
                     # Función sleep para que haya un tiempo de espera entre petición y petición para no sobrecargar
                     # el servidor de peticiones y apreciar bien la peticion y la respuesta
                     
-                    time.sleep(2)                        
+                    # time.sleep(2)                        
                     
                     # Al haber realizado la conexión guardamos la información recibida en la variable data y la decodificamos
                     
@@ -77,7 +80,7 @@ class Sensor(object):
                         logging.info('Receiving data from SolarModules socket...')
                         print("\n")
                         self.RESPONSE = json.loads(data)
-                        if self.RESPONSE['Value']:
+                        if ((self.RESPONSE['Value']) and (self.RESPONSE['type'] == 'DATA')):
                     	    logging.info("Point value (" + str(self.RESPONSE.get("X point")) + ", " + str(self.RESPONSE.get("Y point")) + ") is: " + str(self.RESPONSE.get("Value")))
                     	    print("\n")
                     	
@@ -114,8 +117,14 @@ if __name__ == '__main__':
     
     host = sys.argv[1]
     port = int(sys.argv[2])
-    m = 1000
-    n = 1000
+    logging.info("Please, type the m and n values for the plain requests...")
+    print("\n")
+    logging.info("m value")
+    m = int(input())
+    print("\n")
+    logging.info("n value")
+    n = int(input())
+    
     REQUEST = {'type':'QUERY','message':'request','port':'2500'}
     RESPONSE = {}
     

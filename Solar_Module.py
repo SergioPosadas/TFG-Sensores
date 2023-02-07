@@ -42,11 +42,20 @@ class SolarModule(object):
         logging.info(pl)
 
         # Creación de las variables que se utilizarán para la generacion del ruido de perlin en el plano
-
-        scale = 100.0  # Proporcion entre el plano dibujado y el real
-        octaves = 6  # Número de nivel de detalle que se quiere tenga el ruido de perlin
-        persistence = 0.75  # Número que determina cuánto contribuye una octava a la forma general        
-        lacunarity = 2.0  # Número que hace que la imagen sea mas heterogénea
+        
+        logging.info("Please, type the variables' values for the Perlin Noise generation on the plain...")
+        print("\n")
+        logging.info("Scale, between 0.0 and 100.0 (100.0 recommended)")
+        scale = float(input())              # Proporcion entre el plano dibujado y el real
+        print("\n")
+        logging.info("Octaves, between 0 and 10 (recommended 6")
+        octaves = int(input())            # Número de nivel de detalle que se quiere tenga el ruido de perlin
+        print("\n")
+        logging.info("Persistence, between 0.0 and 1.0 (0.75 recommended)")
+        persistence = float(input())        # Número que determina cuánto contribuye una octava a la forma general
+        print("\n")
+        logging.info("Lacunarity, between 0.0 and 10.0 (2.0 recommended)")        
+        lacunarity = float(input())         # Número que hace que la imagen sea mas heterogénea
 
         # Creación del ruido de perlin en el plano a través de dos bucles for y la funcion noise importada más arriba
 
@@ -103,8 +112,13 @@ class SolarModule(object):
         # se creará la variable dominio donde guardaremos el dominio del plano ponderado previa inicialización igual a 0.
 
         dom = np.zeros(shape)
-        mxdom = 4.65
-        mndom = 2.47
+        logging.info("Please, type the maximum and minimum ponderation's values for the real plain generation...")
+        print("\n")
+        logging.info("Maximum dominium value (4.65 searched in official page)")
+        mxdom = float(input())
+        print("\n")
+        logging.info("Minimum dominium value (2.47 searched in official page)")
+        mndom = float(input())
 
         for i in range(shape[0]):
             for j in range(shape[1]):
@@ -186,13 +200,15 @@ class SolarModule(object):
                     # Una vez comprobado se verifica el tipo de peticion del cliente, si es request se extrae el punto solicitado
                     # y se envía el valor de la irradiancia en dicho punto
                     
-                    if ((self.RESPONSE['X point'] >= 0) and (self.RESPONSE['X point'] <= 1000)):
+                    if ((self.RESPONSE['X point'] >= 0) and (self.RESPONSE['X point'] <= 1000) and (self.RESPONSE['type'] == 'DATA')):
                         x = self.RESPONSE['X point']
                         y = self.RESPONSE['Y point']
                             
                         logging.info("Requested item: (" + str(x) + ", " + str(y) + ")")
                         print("\n")
-                            
+                        
+                        self.REQUEST['type'] = 'DATA'
+                        self.REQUEST['message'] = 'response'    
                         self.REQUEST['X point'] = x
                         self.REQUEST['Y point'] = y
                         self.REQUEST['Value'] = dom[x][y]
