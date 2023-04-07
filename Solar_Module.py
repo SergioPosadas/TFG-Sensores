@@ -10,7 +10,7 @@ class SolarModule(object):
     Creación de la clase SolarModule para probar el modulo a implementar
     """
 
-    def __init__(self, host, port, m, n, REQUEST, RESPONSE):
+    def __init__(self, host, port, m, n, voltage, REQUEST, RESPONSE):
         """
         Creación del constructor init para inicializar el socket del módulo a través del puerto y las dimensiones del plano
         """
@@ -20,11 +20,12 @@ class SolarModule(object):
         
         self.host = host
         self.port = port
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.m = m
         self.n = n
+        self.voltage = voltage
         self.REQUEST = REQUEST
         self.RESPONSE = RESPONSE
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
        
 
     def run(self):
@@ -48,7 +49,7 @@ class SolarModule(object):
         logging.info("Scale, between 0.0 and 100.0 (100.0 recommended)")
         scale = float(input())              # Proporcion entre el plano dibujado y el real
         print("\n")
-        logging.info("Octaves, between 0 and 10 (recommended 6")
+        logging.info("Octaves, between 0 and 10 (recommended 6)")
         octaves = int(input())            # Número de nivel de detalle que se quiere tenga el ruido de perlin
         print("\n")
         logging.info("Persistence, between 0.0 and 1.0 (0.75 recommended)")
@@ -207,11 +208,12 @@ class SolarModule(object):
                         logging.info("Requested item: (" + str(x) + ", " + str(y) + ")")
                         print("\n")
                         
-                        self.REQUEST['type'] = 'DATA'
-                        self.REQUEST['message'] = 'response'    
+                        self.REQUEST['Type'] = 'DATA'
+                        self.REQUEST['Message'] = 'response'    
                         self.REQUEST['X point'] = x
                         self.REQUEST['Y point'] = y
                         self.REQUEST['Value'] = dom[x][y]
+                        self.REQUEST['Medium irradiance'] = media
                                                     
                         logging.info("Sending requested value (" + str(self.REQUEST['Value']) + ") to Sensor...")
                         print("\n")                            

@@ -18,18 +18,30 @@ if __name__ == '__main__':
     # Asignación de las variables que se utilizarán para creación del plano, conexión de sockets
     # y creación de los diferentes diccionarios utilizarán los mensajes para intercambio de información
     
-    logging.info("Please, type the m and n values for the plain generation...")
+    logging.info("Please, type the different values for the solar panel generation...")
+    logging.info("- port (2500 by default)")
+    port = int(input())
     print("\n")
-    logging.info("m value")
+    logging.info("- m value")
     m = int(input())
     print("\n")
-    logging.info("n value")
+    logging.info("- n value")
     n = int(input())
+    print("\n")
+    logging.info("- voltage")
+    voltage = float(input())
     
     host = ''
-    port = 2500
-    REQUEST = {'type':'QUERY','message':'request','port':'2500'}
+    REQUEST = {}
     RESPONSE = {}
+    
+    REQUEST['type'] = 'QUERY'
+    REQUEST['messsage'] = 'request'
+    REQUEST['host'] = host
+    REQUEST['port'] =  port
+    REQUEST['m'] = m
+    REQUEST['n'] = n
+    REQUEST['voltage'] = voltage
         
     # Llamada a la clase SolarModule para inicializar el socket
     
