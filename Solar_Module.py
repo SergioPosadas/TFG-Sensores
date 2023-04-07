@@ -22,7 +22,6 @@ class SolarModule(object):
         self.port = port
         self.m = m
         self.n = n
-        self.voltage = voltage
         self.REQUEST = REQUEST
         self.RESPONSE = RESPONSE
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -226,8 +225,8 @@ class SolarModule(object):
                         logging.info("Incorrect item requested...")
                         logging.info("Requesting the process be repetition...")
                         print("\n")
-                        self.REQUEST['type'] = 'ACK'
-                        self.REQUEST['message'] = 'repeat'
+                        self.REQUEST['Type'] = 'ACK'
+                        self.REQUEST['Message'] = 'repeat'
                         
                         connect.sendall(bytes((str(self.REQUEST).replace("\'", "\"")).encode()))
                         
