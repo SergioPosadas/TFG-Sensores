@@ -71,7 +71,7 @@ class Node_wifi(Node):
         self.params = params
 
         self.intfs = {}  # dict of port numbers to interfaces
-        self.ports = {}  # dict of interfaces to port numbers
+        self.ports = {''' # int(sys.argv[2])'''}  # dict of interfaces to port numbers
         self.wintfs = {}  # dict of wireless port numbers
         self.wports = {}  # dict of interfaces to port numbers
         self.nameToIntf = {}  # dict of interface names to Intfs
