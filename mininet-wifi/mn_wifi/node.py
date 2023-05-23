@@ -19,6 +19,13 @@ OVSAP: a AP using the Open vSwitch OpenFlow-compatible switch
     implementation (openvswitch.org).
 """
 
+# PARTE DE client.py
+from datetime import datetime
+
+import numpy as np
+
+import socket, sys, time, json
+#
 
 import re
 import math
@@ -90,6 +97,20 @@ class Node_wifi(Node):
         self.master, self.slave = None, None  # pylint
         self.startShell()
         self.mountPrivateDirs()
+        
+        # PARTE PEGADA DE client.py
+        # Asignación de los valores de las variables para inicializar y crear el socket del sensor, así como de
+        # la red de Mininet-Wifi.
+        # Creación del diccionario que utilizarán los mensajes de intercambio de información.
+        
+        self.host = host
+        self.port = port
+        self.m = m
+        self.n = n
+        self.voltage = voltage
+        self.REQUEST = REQUEST
+        self.RESPONSE = RESPONSE
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM
 
     # File descriptor to node mapping support
     # Class variables and methods

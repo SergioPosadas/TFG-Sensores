@@ -4,13 +4,14 @@ from datetime import datetime
 
 import numpy as np
 
-import socket, sys, time, logging, json
+import socket, sys, time, json
 
 from mininet.log import setLogLevel, info
 from mn_wifi.cli import CLI
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.energy import Energy
 
+"""
 class Sensor(object):
     """ 
         Creación de la clase Mininet-Wifi para la conexión con Solar Module
@@ -34,13 +35,14 @@ class Sensor(object):
         self.REQUEST = REQUEST
         self.RESPONSE = RESPONSE
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-       
+"""
+
     def topology():                         # ESTO ES EL RUN DE PYTHON
         """
             Creación de la topología del Sensor IoT
         """
     
-    net = Mininet_wifi(iot_module='fakelb')
+    # net = Mininet_wifi(iot_module='fakelb') # no es necesario
     # iot_module: fakelb or mac802154_hwsim
     # mac802154_hwsim is only supported from kernel 4.18
 
@@ -60,8 +62,9 @@ class Sensor(object):
 
     info("*** Stopping network\n")
     net.stop()
-       
-    def run(self):                          # ESTE CODIGO HAY QUE TRANSCRIBIRLO A NET, NODE, ETC
+ 
+ """
+    def run(self):                          # ESTE CODIGO VA EN ENERGY, DALE VUELTAS PARA TRANSCRIBIRLO BIEN
         """
             Método para conectar con el módulo e intercambiar la información necesaria para Mininet-Wifi
         """
@@ -134,16 +137,18 @@ class Sensor(object):
                             connect.close()
                             self.socket.close()
                             break
-            
+"""            
 
 
 if __name__ == '__main__':
     
     # Configuración del nivel del log deseado
-    logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.DEBUG)
+    # logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.DEBUG)
+    setLogLevel('info') # este mejor
     
     topology()
     
+"""
     # ESTE CODIGO HAY QUE TRANSCRIBIRLO A LOS ARCHIVOS NET, NODE, ETC
     
     logging.info('Hellow')
@@ -191,7 +196,7 @@ if __name__ == '__main__':
     
     # Llamada a la clase Mininet-Wifi para inicializar la aplicación
     
-    obj_sensor = MininetWifi(host, port, m, n, REQUEST, RESPONSE)
+    obj_sensor = MininetWifi(host, port, m, n, REQUEST, RESPONSE) # quitarlo
     
     # Se muestra el puerto de conexión
     
@@ -202,7 +207,7 @@ if __name__ == '__main__':
     # e intercambio de información con el socket de SolarModule al que se conecta
     
     obj_sensor.run()
-    
+""" 
    
    
    
