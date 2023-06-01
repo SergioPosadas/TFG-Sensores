@@ -34,7 +34,7 @@ class IntfWireless(Intf):
     eqLatency = '(dist / 10)/2'
     eqBw = ' * (1.01 ** -dist)'
 
-    def __init__(self, name, node=None, port=None, link=None,
+    def __init__(self, name, node=None, port=2500, link=None,
                  mac=None, **params):
         """name: interface name (e.g. sta1-wlan0)
            node: owning node (where this intf most likely lives)

@@ -168,8 +168,8 @@ class Energy(object):
     
     # CREACION DEL CALCULO DE LA ENERGIA GENERADA
     
-    def getTotalEnergyGeneration(self, m, n, irradiance, medium, )
-    """
+    def getTotalEnergyGeneration(self, m, n, irradiance, medium, ):
+        """
         state = self.getState(intf)
         # energy to decrease = time * voltage (mA) * current
         if state == 'idle':
@@ -181,24 +181,24 @@ class Energy(object):
         elif state == 'sleep':
             return self.get_energy(intf, 0.033)
         return 0
-    """
+        """
     
-    # Cálculo de la dimensión del panel solar
-    dimension = self.RESPONSE.get("m") * self.RESPONSE.get("n")
+        # Cálculo de la dimensión del panel solar
+        dimension = self.RESPONSE.get("m") * self.RESPONSE.get("n")
                                 
-    # Cálculo de la irrandiancia solar recogida por el panel solar en cada punto
-    power = self.RESPONSE.get("Value") * dimension
+        # Cálculo de la irrandiancia solar recogida por el panel solar en cada punto
+        power = self.RESPONSE.get("Value") * dimension
                                 
-    # Cálculo del valor de la irradiancia media del panel solar
-    medium irradiance = self.RESPONSE.get("Medium irradiance") * dimension
+        # Cálculo del valor de la irradiancia media del panel solar
+        medium_irradiance = self.RESPONSE.get("Medium irradiance") * dimension
     
-    """
-    # Cálculo del voltage en cada punto del panel solar
-    spvolt = power / "¿INTENSIDAD?"
+        """
+        # Cálculo del voltage en cada punto del panel solar
+        spvolt = power / "¿INTENSIDAD?"
                                 
-    # Cálculo del voltage medio del panel solar
-    spmvolt = medium irradiance / "¿INTENSIDAD MEDIA?"
-    """
+        # Cálculo del voltage medio del panel solar
+        spmvolt = medium irradiance / "¿INTENSIDAD MEDIA?"
+        """
     
     def shutdown_intfs(self, node):
         # passing through all the interfaces

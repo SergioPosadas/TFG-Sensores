@@ -1,27 +1,28 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 from datetime import datetime
-
-import numpy as np
-
-import socket, sys, time, json
 
 from mininet.log import setLogLevel, info
 from mn_wifi.cli import CLI
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.energy import Energy
 
+import numpy as np
+
+import socket, sys, time, json
+
+
 """
 class Sensor(object):
-    """ 
-        Creación de la clase Mininet-Wifi para la conexión con Solar Module
-    """
+     """  
+        # Creación de la clase Mininet-Wifi para la conexión con Solar Module
+"""
         
     def __init__(self, host, port, m, n, voltage, REQUEST, RESPONSE):           # ESTE CODIGO HAY QUE TRANSCRIBIRLO A LOS DIFERENTES CONSTRUCTORES DE NET, NODE, ETC
-        """
-            Creación del constructor init para inicializar el socket de Mininet-Wifi a través del puerto
-            e intercambiar información del plano con el módulo
-        """
+"""
+            # Creación del constructor init para inicializar el socket de Mininet-Wifi a través del puerto
+            # e intercambiar información del plano con el módulo
+"""
         
         # Asignación de los valores de las variables para inicializar y crear el socket del sensor, así como de
         # la red de Mininet-Wifi.
@@ -37,19 +38,20 @@ class Sensor(object):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 """
 
-    def topology():                         # ESTO ES EL RUN DE PYTHON
-        """
+def topology():                         # ESTO ES EL RUN DE PYTHON
+    """
             Creación de la topología del Sensor IoT
-        """
+    """
     
-    # net = Mininet_wifi(iot_module='fakelb') # no es necesario
+    net = Mininet_wifi()   # no es necesario iot_module
     # iot_module: fakelb or mac802154_hwsim
     # mac802154_hwsim is only supported from kernel 4.18
+    # mac80211_hwsim este es por defecto
 
     info("*** Creating nodes\n")            # Cambiar la funcion para añadir también panel solar
-    net.addSolarSensor('sensor1', ip6='2001::1/64', voltage=3.7, panid='0xbeef', m=300, n=300)
-    # net.addSensor('sensor2', ip6='2001::2/64', voltage=3.7, panid='0xbeef')
-    # net.addSensor('sensor3', ip6='2001::3/64', voltage=3.7, panid='0xbeef')
+    net.addSolarSensors('sensor1', voltage=3.7, panid='0xbeef', m=300, n=300)   # ip6='2001::1/64' se puede con ip4
+    # net.addSolarSensors('sensor2', ip6='2001::2/64', voltage=3.7, panid='0xbeef')
+    # net.addSolarSensors('sensor3', ip6='2001::3/64', voltage=3.7, panid='0xbeef')
 
     info("*** Configuring nodes\n")
     net.configureNodes()
@@ -63,11 +65,11 @@ class Sensor(object):
     info("*** Stopping network\n")
     net.stop()
  
- """
+"""
     def run(self):                          # ESTE CODIGO VA EN ENERGY, DALE VUELTAS PARA TRANSCRIBIRLO BIEN
-        """
-            Método para conectar con el módulo e intercambiar la información necesaria para Mininet-Wifi
-        """
+""" 
+            # Método para conectar con el módulo e intercambiar la información necesaria para Mininet-Wifi
+"""
             
         # Comando para conectarse con el socket del módulo cogiendo los valores de 
         # los argumentos introducidos al ejecutar el programa

@@ -60,7 +60,8 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN):
                  plot=False, plot3d=False, docker=False, container='mininet-wifi',
                  ssh_user='alpha', rec_rssi=False, iot_module='mac802154_hwsim',
                  wwan_module='wwan_hwsim', json_file=None, ac_method=None, **kwargs):
-        """Create Mininet object.
+        """
+            Create Mininet object.
 
            accessPoint: default Access Point class
            station: default Station class/constructor
@@ -93,7 +94,8 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN):
            wwan_module: default wwan module
            rec_rssi: sends rssi to mac80211_hwsim by using hwsim_mgmt
            json_file: json file dir - useful for P4
-           ac_method: association control method"""
+           ac_method: association control method
+        """        
         self.station = station
         self.accessPoint = accessPoint
         self.car = car
@@ -1290,7 +1292,7 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN):
                 self.stations.remove(sta)
         self.config_antenna()
 
-    def addSensors(self, sensors):
+    def addSolarSensors(self, sensors):                  # MODIFICAR ESTA FUNCION PARA CONFIGURAR EL NODO COMO SENSOR CON BATERIA Y PANEL SOLAR
         for sensor in sensors:
             self.nameToNode[sensor.name] = sensor
 

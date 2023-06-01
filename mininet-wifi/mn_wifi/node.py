@@ -110,7 +110,7 @@ class Node_wifi(Node):
         self.voltage = voltage
         self.REQUEST = REQUEST
         self.RESPONSE = RESPONSE
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # File descriptor to node mapping support
     # Class variables and methods

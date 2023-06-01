@@ -19,6 +19,13 @@ OVSAP: a AP using the Open vSwitch OpenFlow-compatible switch
     implementation (openvswitch.org).
 """
 
+# PARTE DE client.py
+from datetime import datetime
+
+import numpy as np
+
+import socket, sys, time, json
+#
 
 import re
 import math
@@ -42,15 +49,18 @@ from re import findall
 
 class Node_wifi(Node):
     """A virtual network node is simply a shell in a network namespace.
-       We communicate with it using pipes."""
+       We communicate with it using pipes.
+    """
 
     portBase = 0  # Nodes always start with eth0/port0, even in OF 1.0
 
     def __init__(self, name, inNamespace=True, **params):
-        """name: name of node
-           inNamespace: in network namespace?
-           privateDirs: list of private directory strings or tuples
-           params: Node parameters (see config() for details)"""
+        """
+            name: name of node
+            inNamespace: in network namespace?
+            privateDirs: list of private directory strings or tuples
+            params: Node parameters (see config() for details)
+        """
 
         # Make sure class actually works
         self.checkSetup()
@@ -68,7 +78,7 @@ class Node_wifi(Node):
         self.params = params
 
         self.intfs = {}  # dict of port numbers to interfaces
-        self.ports = {}  # dict of interfaces to port numbers
+        self.ports = {''' # int(sys.argv[2])'''}  # dict of interfaces to port numbers
         self.wintfs = {}  # dict of wireless port numbers
         self.wports = {}  # dict of interfaces to port numbers
         self.nameToIntf = {}  # dict of interface names to Intfs
@@ -87,6 +97,20 @@ class Node_wifi(Node):
         self.master, self.slave = None, None  # pylint
         self.startShell()
         self.mountPrivateDirs()
+        
+        # PARTE PEGADA DE client.py
+        # Asignación de los valores de las variables para inicializar y crear el socket del sensor, así como de
+        # la red de Mininet-Wifi.
+        # Creación del diccionario que utilizarán los mensajes de intercambio de información.
+        
+        self.host = host
+        self.port = port
+        self.m = m
+        self.n = n
+        self.voltage = voltage
+        self.REQUEST = REQUEST
+        self.RESPONSE = RESPONSE
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # File descriptor to node mapping support
     # Class variables and methods
@@ -180,7 +204,9 @@ class Node_wifi(Node):
         self.update_graph()
 
     def setMediumId(self, medium_id, intf=None):
-        """Set medium id to create isolated interface groups"""
+        """
+            Set medium id to create isolated interface groups
+        """
         self.getNameToWintf(intf).setMediumId(medium_id)
 
     def get_txpower(self, intf):
@@ -287,9 +313,12 @@ class Node_wifi(Node):
                 self.update_3d()
 
     def get_distance_to(self, dst):
-        """Get the distance between two nodes
-        :param self: source node
-        :param dst: destination node"""
+        """
+            Get the distance between two nodes
+            :param self: source node
+            :param dst: destination node
+        """
+        
         pos_src = self.position
         pos_dst = dst.position
         x = (float(pos_src[0]) - float(pos_dst[0])) ** 2
@@ -333,10 +362,12 @@ class Node_wifi(Node):
         return self.portBase
 
     def addWAttr(self, intf, port=None):
-        """Add an wireless interface.
-           intf: interface
-           port: port number (optional, typically OpenFlow port number)
-           moveIntfFn: function to move interface (optional)"""
+        """
+            Add an wireless interface.
+            intf: interface
+            port: port number (optional, typically OpenFlow port number)
+            moveIntfFn: function to move interface (optional)
+        """
         if port is None: port = self.newWPort()
 
         self.wintfs[port] = intf
@@ -344,10 +375,12 @@ class Node_wifi(Node):
         self.nameToIntf[intf.name] = intf
 
     def addWIntf(self, intf, port=None):
-        """Add an interface.
-           intf: interface
-           port: port number (optional, typically OpenFlow port number)
-           moveIntfFn: function to move interface (optional)"""
+        """
+            Add an interface.
+            intf: interface
+            port: port number (optional, typically OpenFlow port number)
+            moveIntfFn: function to move interface (optional)
+        """
         if port is None: port = self.newPort()
         self.intfs[port] = intf
         self.ports[intf] = port
@@ -371,17 +404,21 @@ class Node_wifi(Node):
 
     # Convenience and configuration methods
     def setIP6(self, ip, prefixLen=64, intf=None, **kwargs):
-        """Set the IP6 address for an interface.
-           intf: intf or intf name
-           ip: IP6 address as a string
-           kwargs: any additional arguments for intf.setIP6"""
+        """
+            Set the IP6 address for an interface.
+            intf: intf or intf name
+            ip: IP6 address as a string
+            kwargs: any additional arguments for intf.setIP6
+        """
         return self.getNameToWintf(intf).setIP6(ip, prefixLen, **kwargs)
 
     def setIP(self, ip, prefixLen=8, intf=None, **kwargs):
-        """Set the IP address for an interface.
-           intf: intf or intf name
-           ip: IP address as a string
-           kwargs: any additional arguments for intf.setIP"""
+        """
+            Set the IP address for an interface.
+            intf: intf or intf name
+            ip: IP address as a string
+            kwargs: any additional arguments for intf.setIP
+        """
         if intf in self.wintfs:
             return self.getNameToWintf(intf).setIP(ip, prefixLen, **kwargs)
         return self.intf(intf).setIP(ip, prefixLen, **kwargs)
@@ -391,12 +428,14 @@ class Node_wifi(Node):
 
     def config(self, mac=None, ip=None, ip6=None,
                defaultRoute=None, lo='up', **_params):
-        """Configure Node according to (optional) parameters:
-           mac: MAC address for default interface
-           ip: IP address for default interface
-           ip addr: arbitrary interface configuration
-           Subclasses should override this method and call
-           the parent class's config(**params)"""
+        """
+            Configure Node according to (optional) parameters:
+            mac: MAC address for default interface
+            ip: IP address for default interface
+            ip addr: arbitrary interface configuration
+            Subclasses should override this method and call
+            the parent class's config(**params)
+        """
         # If we were overriding this method, we would call
         # the superclass config method here as follows:
         # r = Parent.config( **_params )
@@ -498,8 +537,11 @@ class CPULimitedStation( Station, CPULimitedHost ):
 
 
 class AP(Node_wifi):
-    """A Switch is a Node that is running (or has execed?)
-       an OpenFlow switch."""
+    """
+        A Switch is a Node that is running (or has execed?)
+        an OpenFlow switch.
+    """
+    
     portBase = 1  # Switches start with port 1 in OpenFlow
     dpidLen = 16  # digits in dpid passed to switch
 

@@ -37,6 +37,7 @@ mn_wifi/data/signal_table_ieee80211n_sgi40
 mn_wifi/examples/4address.py
 mn_wifi/examples/6GHz.py
 mn_wifi/examples/6LoWPan.py
+mn_wifi/examples/Example-SolarModule-mininet-wifi.py
 mn_wifi/examples/__init__.py
 mn_wifi/examples/active_scan.py
 mn_wifi/examples/adhoc.py
