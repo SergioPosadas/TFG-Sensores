@@ -46,10 +46,11 @@ def topology():                         # ESTO ES EL RUN DE PYTHON
     net = Mininet_wifi()   # no es necesario iot_module
     # iot_module: fakelb or mac802154_hwsim
     # mac802154_hwsim is only supported from kernel 4.18
-    # mac80211_hwsim este es por defecto
+    # mac80211_hwsim by default
 
     info("*** Creating nodes\n")            # Cambiar la funcion para añadir también panel solar
-    net.addSolarSensors('sensor1', voltage=3.7, panid='0xbeef', m=300, n=300)   # ip6='2001::1/64' se puede con ip4
+    net.addSolarSensors('sensor1', ip6='2001::1/64', voltage=3.7, panid='0xbeef')
+    # ip6='2001::1/64' se puede con ip4 - m=300, n=300
     # net.addSolarSensors('sensor2', ip6='2001::2/64', voltage=3.7, panid='0xbeef')
     # net.addSolarSensors('sensor3', ip6='2001::3/64', voltage=3.7, panid='0xbeef')
 
