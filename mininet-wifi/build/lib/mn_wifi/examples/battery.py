@@ -15,7 +15,7 @@ def topology():
     # mac802154_hwsim is only supported from kernel 4.18
 
     info("*** Creating nodes\n")
-    net.addSensor('sensor1', "ip6='2001::1/64'", voltage=3.7, panid='0xbeef')  #Añadir las variables necesarias para que el sensor sea nodo y batteryless
+    net.addSensor('sensor1', ip6='2001::1/64', voltage=3.7, panid='0xbeef')  #Añadir las variables necesarias para que el sensor sea nodo y batteryless
     
     # net.addSensor('sensor2', ip6='2001::2/64', voltage=3.7, panid='0xbeef')
     # net.addSensor('sensor3', ip6='2001::3/64', voltage=3.7, panid='0xbeef')

@@ -58,7 +58,7 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN):
                  configWiFiDirect=False, config4addr=False, noise_th=-91, cca_th=-90,
                  disable_tcp_checksum=False, ifb=False, client_isolation=False,
                  plot=False, plot3d=False, docker=False, container='mininet-wifi',
-                 ssh_user='alpha', rec_rssi=False, # iot_module='mac80211_hwsim',
+                 ssh_user='alpha', rec_rssi=False, iot_module='mac80211_hwsim',
                  wwan_module='wwan_hwsim', json_file=None, ac_method=None, **kwargs):  
         """
             Create Mininet object.
@@ -161,6 +161,9 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN):
         self.wlinks = []
         self.pointlist = []
         self.initial_mediums = []
+        
+        # Variables de dimension del panel solar añadidas
+        # self.m = m
 
         if autoSetPositions and link == wmediumd:
             self.wmediumd_mode = interference
@@ -1292,7 +1295,7 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN):
                 self.stations.remove(sta)
         self.config_antenna()
 
-    def addSolarSensors(self, sensors):                  # MODIFICAR ESTA FUNCION PARA CONFIGURAR EL NODO COMO SENSOR CON BATERIA Y PANEL SOLAR
+    def addSolarSensor(self, sensors):                  # MODIFICAR ESTA FUNCION PARA CONFIGURAR EL NODO COMO SENSOR CON BATERIA Y PANEL SOLAR
         for sensor in sensors:
             self.nameToNode[sensor.name] = sensor
 

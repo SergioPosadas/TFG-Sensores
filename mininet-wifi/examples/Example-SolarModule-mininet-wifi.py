@@ -6,6 +6,7 @@ from mininet.log import setLogLevel, info
 from mn_wifi.cli import CLI
 from mn_wifi.net import Mininet_wifi
 from mn_wifi.energy import Energy
+from mn_wifi.module import Mac80211Hwsim
 
 import numpy as np
 
@@ -14,7 +15,7 @@ import socket, sys, time, json
 
 """
 class Sensor(object):
-     """  
+"""  
         # Creación de la clase Mininet-Wifi para la conexión con Solar Module
 """
         
@@ -43,13 +44,13 @@ def topology():                         # ESTO ES EL RUN DE PYTHON
             Creación de la topología del Sensor IoT
     """
     
-    net = Mininet_wifi()   # no es necesario iot_module
+    net = Mininet_wifi(iot_module='mac80211_hwsim')   # no es necesario iot_module
     # iot_module: fakelb or mac802154_hwsim
     # mac802154_hwsim is only supported from kernel 4.18
     # mac80211_hwsim by default
 
     info("*** Creating nodes\n")            # Cambiar la funcion para añadir también panel solar
-    net.addSolarSensors('sensor1', ip6='2001::1/64', voltage=3.7, panid='0xbeef')
+    net.addSolarSensor('sensor1', ip6='2001::1/64', voltage=3.7, panid='0xbeef', m=300, n=300)
     # ip6='2001::1/64' se puede con ip4 - m=300, n=300
     # net.addSolarSensors('sensor2', ip6='2001::2/64', voltage=3.7, panid='0xbeef')
     # net.addSolarSensors('sensor3', ip6='2001::3/64', voltage=3.7, panid='0xbeef')
