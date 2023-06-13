@@ -50,7 +50,7 @@ def topology():                         # ESTO ES EL RUN DE PYTHON
     # mac80211_hwsim by default
 
     info("*** Creating nodes\n")            # Cambiar la funcion para añadir también panel solar
-    net.addSolarSensor('sensor1', ip6='2001::1/64', voltage=3.7, panid='0xbeef', m=300, n=300)
+    net.addSolarSensor('sensor1', ip='127.0.0.1', voltage=3.7, panid='0xbeef', m=300, n=300)
     # ip6='2001::1/64' se puede con ip4 - m=300, n=300
     # net.addSolarSensors('sensor2', ip6='2001::2/64', voltage=3.7, panid='0xbeef')
     # net.addSolarSensors('sensor3', ip6='2001::3/64', voltage=3.7, panid='0xbeef')
