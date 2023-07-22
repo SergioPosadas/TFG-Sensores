@@ -44,7 +44,7 @@ def topology():                         # ESTO ES EL RUN DE PYTHON
             Creación de la topología del Sensor IoT
     """
     
-    net = Mininet_wifi(listenPort=2500, ipBase='127.0.0.1')   # no es necesario iot_module
+    net = Mininet_wifi()   # no es necesario iot_module
     # iot_module: fakelb or mac802154_hwsim
     # mac802154_hwsim is only supported from kernel 4.18
     # mac80211_hwsim by default

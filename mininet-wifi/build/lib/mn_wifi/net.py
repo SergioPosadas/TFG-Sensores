@@ -58,7 +58,7 @@ class Mininet_wifi(Mininet, Mininet_IoT, Mininet_WWAN):
                  configWiFiDirect=False, config4addr=False, noise_th=-91, cca_th=-90,
                  disable_tcp_checksum=False, ifb=False, client_isolation=False,
                  plot=False, plot3d=False, docker=False, container='mininet-wifi',
-                 ssh_user='alpha', rec_rssi=False, iot_module='mac80211_hwsim',
+                 ssh_user='alpha', rec_rssi=False, iot_module='mac802154_hwsim',
                  wwan_module='wwan_hwsim', json_file=None, ac_method=None, **kwargs):  
         """
             Create Mininet object.
